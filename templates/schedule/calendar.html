@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block title %}Study Schedule{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row mb-4">
+        <div class="col">
+            <h2>Study Schedule</h2>
+            <p class="text-muted">Plan and track your study sessions</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Add Study Session</h5>
+                </div>
+                <div class="card-body">
+                    <form id="study-session-form">
+                        <div class="mb-3">
+                            <label class="form-label">Topic</label>
+                            <input type="text" class="form-control" name="topic" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Start Time</label>
+                            <input type="datetime-local" class="form-control" name="start_time" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">End Time</label>
+                            <input type="datetime-local" class="form-control" name="end_time" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Notes</label>
+                            <textarea class="form-control" name="notes" rows="3"></textarea>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Schedule Session</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-body">
+                    <div id="calendar"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<!-- Add FullCalendar CSS -->
+<link href="https://cdn.jsdelivr.net/npm/@fullcalendar/core/main.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid/main.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid/main.css" rel="stylesheet" />
+
+<!-- Add FullCalendar JS -->
+<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid/main.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const calendarEl = document.getElementById('calendar');
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'timeGridWeek',
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+        },
+        events: '/api/study-sessions',
+        editable: true,
+        eventClick: function(info) {
+            // Show session details
+            const event = info.event;
+            const modal = new bootstrap.Modal(document.getElementById('sessionDetailsModal'));
+            document.getElementById('sessionTopic').textContent = event.title;
+            document.getElementById('sessionNotes').textContent = event.extendedProps.notes || 'No notes';
+            modal.show();
+        }
+    });
+    calendar.render();
+
+    // Handle form submission
+    const studySessionForm = document.getElementById('study-session-form');
+    studySessionForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(studySessionForm);
+        
+        try {
+            const response = await fetch('/api/study-sessions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    topic: formData.get('topic'),
+                    start_time: formData.get('start_time'),
+                    end_time: formData.get('end_time'),
+                    notes: formData.get('notes')
+                })
+            });
+            
+            if (response.ok) {
+                calendar.refetchEvents();
+                studySessionForm.reset();
+            } else {
+                throw new Error('Failed to schedule session');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Failed to schedule study session');
+        }
+    });
+});
+</script>
+
+<!-- Session Details Modal -->
+<div class="modal fade" id="sessionDetailsModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Session Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <h6>Topic</h6>
+                <p id="sessionTopic"></p>
+                <h6>Notes</h6>
+                <p id="sessionNotes"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

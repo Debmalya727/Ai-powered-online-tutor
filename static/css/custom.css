@@ -1,0 +1,106 @@
+/* Chat styles */
+.chat-message {
+    display: flex;
+    margin-bottom: 1rem;
+}
+
+.user-message {
+    justify-content: flex-end;
+}
+
+.chat-message > div {
+    border-radius: 1rem;
+    padding: 0.75rem 1rem;
+    max-width: 75%;
+}
+
+.user-message > div {
+    background-color: var(--bs-primary);
+    color: white;
+}
+
+.ai-message > div {
+    background-color: var(--bs-secondary);
+}
+
+/* Learning Path Timeline */
+.learning-path-timeline {
+    position: relative;
+    padding: 20px 0;
+}
+
+.milestone {
+    position: relative;
+    padding: 20px 0 20px 50px;
+    border-left: 2px solid var(--bs-gray);
+}
+
+.milestone-dot {
+    position: absolute;
+    left: -9px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--bs-secondary);
+    border: 2px solid var(--bs-dark);
+}
+
+.milestone.completed .milestone-dot {
+    background: var(--bs-success);
+}
+
+.milestone.active .milestone-dot {
+    transform: scale(1.2);
+    transition: transform 0.2s ease;
+}
+
+.milestone-content {
+    background: var(--bs-dark);
+    padding: 15px;
+    border-radius: 8px;
+    margin-left: 15px;
+}
+
+/* Dashboard card hover effect */
+.card {
+    transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* Custom scrollbar for chat */
+#chat-messages::-webkit-scrollbar {
+    width: 6px;
+}
+
+#chat-messages::-webkit-scrollbar-track {
+    background: var(--bs-dark);
+}
+
+#chat-messages::-webkit-scrollbar-thumb {
+    background: var(--bs-secondary);
+    border-radius: 3px;
+}
+
+/* Progress indicators */
+.progress {
+    height: 0.8rem;
+    background-color: var(--bs-dark);
+}
+
+.progress-bar {
+    transition: width 0.6s ease;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .chat-message > div {
+        max-width: 85%;
+    }
+
+    .milestone {
+        padding-left: 30px;
+    }
+}

@@ -1,0 +1,61 @@
+AI Tutor Project Structure
+
+/
+├── app.py                 # Main application file with routes and configuration
+├── main.py               # Entry point
+├── models.py             # Database models
+├── utils.py              # Utility functions and AI integration
+├── static/
+│   ├── css/
+│   │   ├── custom.css    # Custom styles
+│   │   └── quiz.css      # New: Styles for quiz interface
+│   └── js/
+│       ├── chat.js       # Chat functionality
+│       ├── dashboard.js  # Dashboard charts and interactions
+│       ├── quiz.js       # New: Quiz functionality
+│       └── schedule.js   # New: Study schedule management
+├── templates/
+│   ├── base.html         # Base template
+│   ├── index.html        # Landing page
+│   ├── login.html        # Login page
+│   ├── register.html     # Registration page
+│   ├── dashboard.html    # User dashboard
+│   ├── chat.html        # AI chat interface
+│   ├── profile.html     # User profile
+│   ├── quiz/            # New: Quiz related templates
+│   │   ├── list.html    # List of available quizzes
+│   │   ├── take.html    # Quiz taking interface
+│   │   └── results.html # Quiz results display
+│   ├── analytics/       # New: Analytics related templates
+│   │   ├── progress.html # Detailed progress analytics
+│   │   └── report.html  # Progress reports
+│   └── schedule/        # New: Schedule related templates
+│       ├── calendar.html # Study calendar view
+│       └── planner.html  # Study session planner
+
+New Database Models to Add (in models.py):
+1. Quiz - Store quiz questions and answers
+2. QuizAttempt - Track user's quiz attempts and scores
+3. StudySession - Track planned study sessions
+4. LearningPath - Custom learning paths for users
+
+New Features to Implement:
+1. Quiz System
+   - Create and take quizzes
+   - Track quiz history and performance
+   - Generate personalized quiz recommendations
+
+2. Progress Analytics
+   - Detailed progress tracking
+   - Performance visualization
+   - Learning pattern analysis
+
+3. Study Schedule
+   - Calendar integration
+   - Study session planning
+   - Reminder system
+
+4. Learning Path Customization
+   - Custom learning paths
+   - Topic prerequisites
+   - Progress-based recommendations

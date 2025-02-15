@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4 class="mb-0">Learning Progress</h4>
+                </div>
+                <div class="card-body">
+                    <canvas id="progressChart"></canvas>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4 class="mb-0">Learning Path</h4>
+                </div>
+                <div class="card-body">
+                    <div class="learning-path-timeline">
+                        {% for milestone in learning_path %}
+                        <div class="milestone {% if milestone.completed %}completed{% endif %}">
+                            <div class="milestone-dot"></div>
+                            <div class="milestone-content">
+                                <h5>{{ milestone.title }}</h5>
+                                <p>{{ milestone.description }}</p>
+                                <div class="progress">
+                                    <div class="progress-bar" role="progressbar" 
+                                         style="width: {{ milestone.progress }}%"
+                                         aria-valuenow="{{ milestone.progress }}" 
+                                         aria-valuemin="0" 
+                                         aria-valuemax="100">
+                                        {{ milestone.progress }}%
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4 class="mb-0">Quick Actions</h4>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="{{ url_for('chat') }}" class="btn btn-primary">
+                            <i data-feather="message-square"></i> Start Chat Session
+                        </a>
+                        <a href="{{ url_for('quiz_list') }}" class="btn btn-secondary">
+                            <i data-feather="check-circle"></i> Take a Quiz
+                        </a>
+                        <a href="{{ url_for('schedule') }}" class="btn btn-secondary">
+                            <i data-feather="calendar"></i> Schedule Study Session
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4 class="mb-0">Performance Summary</h4>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <h6>Quiz Performance</h6>
+                        <div class="d-flex justify-content-between">
+                            <span>Average Score:</span>
+                            <span class="text-primary">{{ quiz_stats.average_score }}%</span>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>Quizzes Completed:</span>
+                            <span>{{ quiz_stats.completed_count }}</span>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <h6>Study Time</h6>
+                        <div class="d-flex justify-content-between">
+                            <span>This Week:</span>
+                            <span>{{ study_stats.weekly_hours }}h</span>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>Total:</span>
+                            <span>{{ study_stats.total_hours }}h</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0">Recommended Content</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for recommendation in recommendations %}
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ recommendation.title }}</h5>
+                                    <p class="card-text">{{ recommendation.description }}</p>
+                                    <a href="{{ recommendation.url }}" class="btn btn-primary" target="_blank">
+                                        Learn More
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}{{ quiz.title }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="mb-0">{{ quiz.title }}</h3>
+                    <p class="text-muted mb-0">{{ quiz.description }}</p>
+                </div>
+                <div class="card-body">
+                    <form id="quiz-form">
+                        {% for question in quiz.questions %}
+                        <div class="question-container mb-4">
+                            <h5>Question {{ loop.index }}</h5>
+                            <p class="mb-3">{{ question.question }}</p>
+                            
+                            {% for option in question.options %}
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" 
+                                       type="radio" 
+                                       name="question_{{ question.id }}" 
+                                       id="option_{{ question.id }}_{{ loop.index }}"
+                                       value="{{ option }}">
+                                <label class="form-check-label" 
+                                       for="option_{{ question.id }}_{{ loop.index }}">
+                                    {{ option }}
+                                </label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endfor %}
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Submit Quiz</button>
+                            <a href="{{ url_for('quiz_list') }}" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Result Modal -->
+<div class="modal fade" id="resultModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Quiz Results</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center mb-4">
+                    <h3 class="score-display"></h3>
+                    <p class="score-details"></p>
+                </div>
+                <div class="progress mb-4">
+                    <div class="progress-bar" role="progressbar"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="{{ url_for('quiz_list') }}" class="btn btn-secondary">Back to Quizzes</a>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Review Answers</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const quizForm = document.getElementById('quiz-form');
+    const resultModal = new bootstrap.Modal(document.getElementById('resultModal'));
+    
+    quizForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        // Collect answers
+        const answers = {};
+        const formData = new FormData(quizForm);
+        
+        for (let [name, value] of formData.entries()) {
+            const questionId = name.replace('question_', '');
+            answers[questionId] = value;
+        }
+        
+        try {
+            const response = await fetch(`/api/quiz/{{ quiz.id }}/submit`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    quiz_id: {{ quiz.id }},
+                    answers: answers
+                })
+            });
+            
+            const result = await response.json();
+            
+            if (result.error) {
+                throw new Error(result.error);
+            }
+            
+            // Update modal content
+            const scoreDisplay = document.querySelector('.score-display');
+            const scoreDetails = document.querySelector('.score-details');
+            const progressBar = document.querySelector('.progress-bar');
+            
+            scoreDisplay.textContent = `${Math.round(result.score)}%`;
+            scoreDetails.textContent = `${result.correct_answers} out of ${result.total_questions} questions correct`;
+            
+            progressBar.style.width = `${result.score}%`;
+            progressBar.className = `progress-bar ${result.score >= 70 ? 'bg-success' : 'bg-warning'}`;
+            
+            // Show results
+            resultModal.show();
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Failed to submit quiz. Please try again.');
+        }
+    });
+});
+</script>
+{% endblock %}

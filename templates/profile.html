@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4 class="mb-0">Profile Information</h4>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-3">
+                        <i data-feather="user" style="width: 64px; height: 64px;"></i>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Username</label>
+                        <input type="text" class="form-control" value="{{ current_user.username }}" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" value="{{ current_user.email }}" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Member Since</label>
+                        <input type="text" class="form-control" value="{{ current_user.created_at.strftime('%B %d, %Y') }}" readonly>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4 class="mb-0">Learning Statistics</h4>
+                </div>
+                <div class="card-body">
+                    <canvas id="learningStats"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    feather.replace();
+    
+    const ctx = document.getElementById('learningStats').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+            datasets: [{
+                label: 'Learning Progress',
+                data: [65, 75, 82, 90],
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 100
+                }
+            }
+        }
+    });
+});
+</script>
+{% endblock %}

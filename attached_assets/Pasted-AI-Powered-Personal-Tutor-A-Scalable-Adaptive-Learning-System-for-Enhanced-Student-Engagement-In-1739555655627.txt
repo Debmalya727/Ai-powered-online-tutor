@@ -1,0 +1,47 @@
+AI-Powered Personal Tutor: A Scalable, Adaptive Learning System for Enhanced Student
+Engagement
+In the rapidly evolving educational landscape, personalized learning has become a key
+driver in improving student outcomes. However, traditional tutoring methods are limited
+by resources, scalability, and accessibility. The challenge is to develop an intelligent,
+scalable AI-powered personal tutor system that can provide tailored learning experiences
+to students in real-time, addressing individual needs and learning styles, while ensuring
+secure and personalized access through user authentication.
+Participants are encouraged to leverage Intel’s offerings, including hardware, software,
+and AI technologies, to build and optimize the solution for maximum performance,
+scalability, and efficiency.
+Objective:
+The goal is to create an AI-based personal tutor system capable of:
+1. Personalized Learning: The system should adapt to the unique learning
+pace and style of each student, recommending customized learning paths and exercises.
+2. Real-Time Assistance: Provide immediate assistance for academic queries,
+with AI-powered chat or voice interaction, simulating a human tutor experience.
+3. Progress Tracking & Feedback: Continuously assess student performance
+and provide feedback to guide improvement, identify areas for growth, and motivate
+students.
+4. Content Recommendation: Suggest additional resources, such as videos,
+articles, and quizzes, based on the student’s current progress and interests.
+5. User Authentication: Implement a secure user authentication mechanism
+to ensure that students’ learning data is private and personalized. The system should allow
+users to sign up, log in, and manage their profiles while safeguarding their progress and
+preferences.
+6. Scalability and Accessibility: Ensure the system can handle multiple users
+and be accessible across various devices, creating an inclusive learning experience.
+Encouraged Use of Intel Technologies:
+Participants are encouraged to integrate the following Intel offerings into their solution:
+• Intel® CPUs and GPUs: Leverage Intel’s high-performance processors for
+fast computation, AI model training, and real-time interaction.
+• Intel® Distribution of OpenVINO™ Toolkit: Use OpenVINO™ to optimize AI
+model inference, particularly for edge devices, improving speed and efficiency.
+• Intel® DevCloud: Utilize Intel’s cloud platform for testing, simulating, and
+optimizing your solution on Intel’s infrastructure.
+• Intel® AI Analytics Toolkit: Implement machine learning algorithms and
+data analytics using Intel’s AI libraries and frameworks.
+• Intel® Security Technologies: Enhance the user authentication process and
+secure data storage using Intel’s security offerings.
+Expected Outcome:
+By the end of the training program, students should develop a prototype of an AI-powered
+personal tutor system that demonstrates key functionalities such as adaptive learning
+paths, real-time assistance, progress tracking, personalized content recommendations,
+and secure user authentication. The solution should be optimized for performance using
+Intel’s offerings, including hardware, AI technologies, and cloud infrastructure, to create a
+scalable, user-centric, and secure educational tool.
